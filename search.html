@@ -163,46 +163,43 @@ body { background:white; padding-bottom:70px; }
 
 <script>
 // DATA PRODUK
-const products = [];
-
-// Fungsi buat produk otomatis
-function createProducts(category, count, startId, baseName, basePrice, imgUrl) {
-    const temp = [];
-    for(let i = 0; i < count; i++) {
-        temp.push({
-            id: startId + i,
-            name: `${baseName} ${i + 1}`,
-            price: basePrice + i * 1000, // harga bertambah tiap produk
-            img: imgUrl,
-            category: category
-        });
-    }
-    return temp;
-}
-
-let idCounter = 1;
-
-// Fashion
-products.push(...createProducts("fashion", 35, idCounter, "Kaos Polos Premium", 30000, "https://i.imgur.com/mE5ZP3R.jpeg"));
-idCounter += 35;
-
-// Gaming
-products.push(...createProducts("gaming", 35, idCounter, "Headset Gaming RGB", 125000, "https://i.imgur.com/O3E5Q4m.jpeg"));
-idCounter += 35;
-
-// Elektronik
-products.push(...createProducts("elektronik", 35, idCounter, "Keyboard Mechanical", 160000, "https://i.imgur.com/rpJPMzV.jpeg"));
-idCounter += 35;
-
-// Perabotan
-products.push(...createProducts("perabotan", 35, idCounter, "Kursi Ergonomis", 75000, "https://via.placeholder.com/150"));
-idCounter += 35;
-
-// Kecantikan
-products.push(...createProducts("kecantikan", 35, idCounter, "Lip Tint Natural", 15000, "https://i.imgur.com/gPqIY1H.jpeg"));
-idCounter += 35;
-
-console.log(products);
+const products = [
+  { id:1, name:"Auzy - Kaos Hitam", price:59000, img:"https://down-id.img.susercontent.com/file/id-11134207-7r98q-lwf6r9lcro22f4", category:"fashion" },
+  { id:2, name:"Auzy - Kaos Putih", price:59000, img:"https://down-id.img.susercontent.com/file/id-11134207-7r98x-lwf6r9lcxabud3", category:"fashion" },
+  { id:3, name:"Flypower - Kaos Hitam", price:125000, img:"https://cf.shopee.co.id/file/id-11134207-7r98o-lxgrygh8j31q87", category:"fashion" },
+  { id:4, name:"Geo - Kaos Distro", price:76000, img:"https://natgeostore.id/cdn/shop/files/photo_6064289747037176920_w.jpg?v=1745155269&width=1706", category:"fashion" },
+  { id:5, name:"Rizz - Kaos Distro", price:99000, img:"https://www.russ.co.id/cdn/shop/products/COKSUFALLEN1WEB_600x.jpg?v=1739798069", category:"fashion" },
+  { id:6, name:"HOS - Jaket Varsity", price:200000, img:"https://houseofsmith.co.id/wp-content/uploads/2022/04/New-Chamsity-8-a.jpg", category:"fashion" },
+  { id:7, name:"Wadezig - Jaket Hoodie", price:169000, img:"https://id-test-11.slatic.net/p/ba28687375c2f93ddef5652510fad308.jpg", category:"fashion" },
+  { id:8, name:"Sepatu Sneakers", price:150000, img:"https://img.lazcdn.com/g/p/5a9457693b8a280c02b15abbe300a889.jpg_720x720q80.jpg", category:"fashion" },
+  { id:9, name:"H&K - Kaos Distro", price:76000, img:"https://admin.pastoralyubileum2025.com/file/get/catalogs/kaos-luce-awan/kaos.jpg", category:"fashion" },
+  { id:10, name:"Kaos Distro", price:99000, img:"https://marketplace.canva.com/EAF5R2Z9Fyo/1/0/1600w/canva-abu---abu-minimalis-jual-kaos-kiriman-instagram-sCrxnOsyZlY.jpg", category:"fashion" },
+  { id:11, name:"Kaos Polos Premium 11", price:40000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:12, name:"Kaos Polos Premium 12", price:41000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:13, name:"Kaos Polos Premium 13", price:42000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:14, name:"Kaos Polos Premium 14", price:43000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:15, name:"Kaos Polos Premium 15", price:44000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:16, name:"Kaos Polos Premium 16", price:45000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:17, name:"Kaos Polos Premium 17", price:46000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:18, name:"Kaos Polos Premium 18", price:47000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:19, name:"Kaos Polos Premium 19", price:48000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:20, name:"Kaos Polos Premium 20", price:49000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:21, name:"Kaos Polos Premium 21", price:50000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:22, name:"Kaos Polos Premium 22", price:51000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:23, name:"Kaos Polos Premium 23", price:52000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:24, name:"Kaos Polos Premium 24", price:53000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:25, name:"Kaos Polos Premium 25", price:54000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:26, name:"Kaos Polos Premium 26", price:55000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:27, name:"Kaos Polos Premium 27", price:56000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:28, name:"Kaos Polos Premium 28", price:57000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:29, name:"Kaos Polos Premium 29", price:58000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:30, name:"Kaos Polos Premium 30", price:59000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:31, name:"Kaos Polos Premium 31", price:60000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:32, name:"Kaos Polos Premium 32", price:61000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:33, name:"Kaos Polos Premium 33", price:62000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:34, name:"Kaos Polos Premium 34", price:63000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:35, name:"Kaos Polos Premium 35", price:64000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" }
+];
 
 const productList = document.getElementById("productList");
 const searchInput = document.getElementById("searchInput");
