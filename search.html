@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Produk</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+body { background:white; padding-bottom:70px; }
+
+/* NAVBAR SEARCH */
+.navbar {
+  background: linear-gradient(90deg, #5F2EEA, #9B5DE5);
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+  position: sticky;
+  top:0;
+  z-index:10;
+}
+.navbar input {
+  width:100%;
+  border:none;
+  outline:none;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* FILTER / SORTING */
+.filter-sort { display:flex; gap:10px; padding:10px 15px; flex-wrap:wrap; }
+.filter-dropdown { position:relative; }
+.filter-dropdown button {
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  background:white;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  transition:0.2s;
+}
+.filter-dropdown button:hover { background:#f0f0f0; }
+.filter-options {
+  display:none;
+  position:absolute;
+  top:110%;
+  left:0;
+  background:white;
+  border:1px solid #ccc;
+  border-radius:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  z-index:50;
+  min-width:150px;
+  overflow:hidden;
+}
+.filter-options div {
+  padding:8px 12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.filter-options div:hover { background:#5F2EEA; color:white; }
+.filter-options div.active { background:#5F2EEA; color:white; font-weight:bold; }
+
+/* PRODUCTS GRID */
+.products {
+  padding:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+.product-card {
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  transition:0.2s;
+  cursor:pointer;
+}
+.product-card:hover { transform:scale(1.05); }
+.product-card img { width:100%; height:160px; object-fit:cover; }
+.product-info { padding:10px; }
+.product-info h3 { font-size:15px; margin-bottom:4px; height:35px; }
+.price { color:#5F2EEA; font-weight:bold; }
+.add-btn {
+  background:#5F2EEA;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  width:100%;
+  border-radius:6px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:60px;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #ddd;
+  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
+}
+.bottom-nav a {
+  text-decoration:none;
+  color:#555;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.bottom-nav a span { margin-top:2px; }
+.bottom-nav a.active { color:#ee4d2d; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR SEARCH -->
+<div class="navbar">
+  <input type="text" id="searchInput" placeholder="Cari produk...">
+</div>
+
+<!-- FILTER / SORTING -->
+<div class="filter-sort">
+  <div class="filter-dropdown">
+    <button id="categoryFilterBtn">Kategori ▼</button>
+    <div class="filter-options" id="categoryOptions">
+      <div data-category="all" class="active">Semua</div>
+      <div data-category="elektronik">Elektronik</div>
+      <div data-category="fashion">Fashion</div>
+      <div data-category="gaming">Gaming</div>
+      <div data-category="kecantikan">Kecantikan</div>
+      <div data-category="perabot">Perabot Rumah</div>
+    </div>
+  </div>
+
+  <div class="filter-dropdown">
+    <button id="priceFilterBtn">Harga ▼</button>
+    <div class="filter-options" id="priceOptions">
+      <div data-price="default" class="active">Default</div>
+      <div data-price="asc">Harga Terendah</div>
+      <div data-price="desc">Harga Tertinggi</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products" id="productList"></div>
+
+<!-- BOTTOM NAVBAR -->
+<div class="bottom-nav">
+  <a href="index.html">🏠<span>Beranda</span></a>
+  <a href="notif.html" class="active">🔔<span>Notifikasi</span></a>
+  <a href="account.html">👤<span>Saya</span></a>
+</div>
+
+<script>
+// DATA PRODUK
+const products = [];
+
+// Fungsi buat produk otomatis
+function createProducts(category, count, startId, baseName, basePrice, imgUrl) {
+    const temp = [];
+    for(let i = 0; i < count; i++) {
+        temp.push({
+            id: startId + i,
+            name: `${baseName} ${i + 1}`,
+            price: basePrice + i * 1000, // harga bertambah tiap produk
+            img: imgUrl,
+            category: category
+        });
+    }
+    return temp;
+}
+
+let idCounter = 1;
+
+// Fashion
+products.push(...createProducts("fashion", 35, idCounter, "Kaos Polos Premium", 30000, "https://i.imgur.com/mE5ZP3R.jpeg"));
+idCounter += 35;
+
+// Gaming
+products.push(...createProducts("gaming", 35, idCounter, "Headset Gaming RGB", 125000, "https://i.imgur.com/O3E5Q4m.jpeg"));
+idCounter += 35;
+
+// Elektronik
+products.push(...createProducts("elektronik", 35, idCounter, "Keyboard Mechanical", 160000, "https://i.imgur.com/rpJPMzV.jpeg"));
+idCounter += 35;
+
+// Perabotan
+products.push(...createProducts("perabotan", 35, idCounter, "Kursi Ergonomis", 75000, "https://via.placeholder.com/150"));
+idCounter += 35;
+
+// Kecantikan
+products.push(...createProducts("kecantikan", 35, idCounter, "Lip Tint Natural", 15000, "https://i.imgur.com/gPqIY1H.jpeg"));
+idCounter += 35;
+
+console.log(products);
+
+const productList = document.getElementById("productList");
+const searchInput = document.getElementById("searchInput");
+
+// CART
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+function addToCart(id){
+  const item = products.find(p=>p.id===id);
+  const exist = cart.find(p=>p.id===id);
+  if(exist){ exist.qty+=1; }
+  else { cart.push({...item, qty:1}); }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`${item.name} ditambahkan ke keranjang!`);
+}
+
+// LOAD PRODUK
+function loadProducts(list){
+  productList.innerHTML="";
+  if(list.length===0){
+    productList.innerHTML="<p style='text-align:center; padding:20px;'>Produk tidak ditemukan.</p>";
+    return;
+  }
+  list.forEach(p=>{
+    productList.innerHTML += `
+      <div class="product-card">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="product-info">
+          <h3>${p.name}</h3>
+          <p class="price">Rp ${p.price.toLocaleString()}</p>
+          <button class="add-btn" onclick="addToCart(${p.id})">+ Keranjang</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// SEARCH LIVE
+searchInput.addEventListener("keyup", ()=>{
+  filterProducts();
+});
+
+// FILTER DROPDOWN
+document.querySelectorAll('.filter-dropdown button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const options = btn.nextElementSibling;
+    options.style.display = options.style.display==='block' ? 'none' : 'block';
+  });
+});
+
+// FILTER KATEGORI
+const categoryOptions = document.getElementById('categoryOptions');
+categoryOptions.querySelectorAll('div').forEach(option=>{
+  option.addEventListener('click', ()=>{
+    categoryOptions.querySelectorAll('div').forEach(o=>o.classList.remove('active'));
+    option.classList.add('active');
+    categoryOptions.style.display='none';
+    filterProducts();
+  });
+});
+
+// FILTER HARGA
+const priceOptions = document.getElementById('priceOptions');
+priceOptions.querySelectorAll('div').forEach(option=>{
+  option.addEventListener('click', ()=>{
+    priceOptions.querySelectorAll('div').forEach(o=>o.classList.remove('active'));
+    option.classList.add('active');
+    priceOptions.style.display='none';
+    filterProducts();
+  });
+});
+
+// Tutup dropdown saat klik luar
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.filter-dropdown')){
+    document.querySelectorAll('.filter-options').forEach(o=>o.style.display='none');
+  }
+});
+
+// FUNCTION FILTER UTAMA
+function filterProducts(){
+  let filtered = [...products];
+
+  // Search
+  const keyword = searchInput.value.toLowerCase();
+  if(keyword) filtered = filtered.filter(p=>p.name.toLowerCase().includes(keyword));
+
+  // Kategori
+  const activeCategory = categoryOptions.querySelector('div.active').dataset.category;
+  if(activeCategory!=="all") filtered = filtered.filter(p=>p.category===activeCategory);
+
+  // Harga
+  const activePrice = priceOptions.querySelector('div.active').dataset.price;
+  if(activePrice==="asc") filtered.sort((a,b)=>a.price-b.price);
+  if(activePrice==="desc") filtered.sort((a,b)=>b.price-a.price);
+
+  loadProducts(filtered);
+}
+
+// LOAD SEMUA PRODUK AWAL
+loadProducts(products);
+</script>
+</body>
+</html>

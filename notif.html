@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifikasi</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+body { background:white; padding-bottom:80px; }
+
+/* NAVBAR ATAS */
+.navbar {
+  background: linear-gradient(90deg, #5F2EEA, #9B5DE5);
+  padding:10px 20px;
+  color:#fff;
+  position: sticky;
+  top:0;
+  z-index:10;
+  text-align:center;
+  font-weight:bold;
+}
+
+/* NOTIFICATION LIST */
+.notifications {
+  padding:15px;
+  max-width:600px;
+  margin:10px auto;
+}
+.notification-card {
+  background:white;
+  padding:12px 15px;
+  margin-bottom:10px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  transition:0.2s;
+}
+.notification-card:hover { transform:scale(1.02); box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+.notification-card p { font-size:14px; color:#333; }
+.notification-card span { font-size:12px; color:#999; float:right; }
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:60px;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #ddd;
+  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
+  z-index:100;
+}
+.bottom-nav a {
+  text-decoration:none;
+  color:#555;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position: relative;
+}
+.bottom-nav a span { margin-top:2px; }
+.bottom-nav a.active { color:#ee4d2d; }
+.badge {
+  position: absolute;
+  top:-5px;
+  right:-10px;
+  background:red;
+  color:white;
+  font-size:10px;
+  padding:2px 5px;
+  border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">Notifikasi</div>
+
+<div class="notifications" id="notifList">
+  <!-- Notifikasi akan muncul di sini -->
+</div>
+
+<!-- BOTTOM NAVBAR --><div class="bottom-nav">
+  <a href="index.html">🏠<span>Beranda</span></a>
+  <a href="notif.html" class="active">🔔<span>Notifikasi</span></a>
+  <a href="account.html">👤<span>Saya</span></a>
+</div>
+
+
+<script>
+// Dummy Notifikasi
+const notifications = [
+  { text:"Pesanan #12345 berhasil dikirim", time:"2 jam lalu" },
+  { text:"Diskon 20% untuk produk gaming!", time:"5 jam lalu" },
+  { text:"Update sistem berhasil dilakukan", time:"1 hari lalu" }
+];
+
+const notifList = document.getElementById("notifList");
+const notifCount = document.getElementById("notifCount");
+
+function loadNotifications(){
+  notifList.innerHTML="";
+  notifications.forEach(n=>{
+    const div = document.createElement("div");
+    div.classList.add("notification-card");
+    div.innerHTML = `<p>${n.text}<span>${n.time}</span></p>`;
+    notifList.appendChild(div);
+  });
+  notifCount.textContent = notifications.length;
+}
+loadNotifications();
+</script>
+</body>
+</html>

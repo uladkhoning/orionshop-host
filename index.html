@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Keren</title>
+<style>
+* { 
+  margin:0; 
+  padding:0; 
+  box-sizing:border-box; 
+  font-family:'Poppins',sans-serif; 
+  }
+  
+body { 
+  background:white; 
+  padding-bottom:80px;
+  }
+
+/* NAVBAR ATAS */
+.navbar {
+  background: linear-gradient(90deg, #5F2EEA, #9B5DE5);
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  color:#fff;
+  position: sticky;
+  top:0;
+  z-index:10;
+}
+.search-box { 
+  flex:1;
+}
+.search-box input {
+  width:100%;
+  border:none;
+  outline:none;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+.cart-btn { 
+  padding:6px 12px; 
+  color:#fff; 
+  font-size:20px; 
+  cursor:pointer; 
+  text-decoration:none;
+}
+
+/* BANNER */
+.banner {
+  width:95%;
+  height:225px;
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+  margin:10px auto;
+  max-width:600px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+.banner img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  top:;
+  left:0;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+  z-index:0;
+}
+.banner img.active { 
+  opacity:1; 
+  z-index:1; 
+}
+.banner-dots {
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+}
+.banner-dots span {
+  width:10px; 
+  height:10px; 
+  border-radius:50%;
+  background:rgba(255,255,255,0.5);
+  cursor:pointer;
+}
+.banner-dots span.active { 
+  background:white; 
+}
+
+/* CATEGORIES */
+.categories {
+  padding:12px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:10px;
+  text-align:center;
+}
+.categories div {
+  background:black;
+  padding:10px;
+  border-radius:10px;
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.categories .active { background: linear-gradient(90deg,#5F2EEA,#9B5DE5); font-weight:bold; }
+.categories div:hover {
+  transform:scale(1.05);
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  background:#5F2EEA;
+}
+
+/* PRODUCTS GRID */
+.products {
+  padding:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+.product-card {
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  transition:0.2s;
+  cursor:pointer;
+}
+.product-card:hover { transform:scale(1.05); }
+.product-card img { width:100%; height:160px; object-fit:cover; }
+.product-info { padding:10px; }
+.product-info h3 { font-size:15px; margin-bottom:4px; height:35px; }
+.price { color:#5F2EEA; font-weight:bold; }
+.add-btn {
+  background:#5F2EEA;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  width:100%;
+  border-radius:6px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:60px;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid #ddd;
+  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
+  z-index:100;
+}
+.bottom-nav a {
+  text-decoration:none;
+  color:#555;
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position: relative;
+}
+.bottom-nav a span { margin-top:2px; }
+.bottom-nav a.active { color:#ee4d2d; }
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="search-box">
+    <input type="text" placeholder="⌕ Cari Produk" onclick="window.location.href='search.html'">
+  </div>
+  <a href="cart.html" class="cart-btn">🛒 <span id="cartCount">0</span></a>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  <img src="banner1.png" class="active" alt="Banner 1">
+  <img src="banner2.png" alt="Banner 2">
+  <img src="banner3.png" alt="Banner 3">
+  <div class="banner-dots"></div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories" id="categoryList">
+  <div data-category="all" class="active">Semua</div>
+  <div data-category="elektronik">Elektronik</div>
+  <div data-category="fashion">Fashion</div>
+  <div data-category="gaming">Gaming</div>
+  <div data-category="kecantikan">Kecantikan</div>
+  <div data-category="perabot">Perabot Rumah</div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products" id="productList"></div>
+
+<!-- BOTTOM NAVBAR -->
+<div class="bottom-nav">
+  <a href="index.html">🏠<span>Beranda</span></a>
+  <a href="notif.html" class="active">🔔<span>Notifikasi</span></a>
+  <a href="account.html">👤<span>Saya</span></a>
+</div>
+
+<script>
+// DATA PRODUK
+const products = [
+  { id:1, name:"Kaos Polos Premium 1", price:30000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:2, name:"Kaos Polos Premium 2", price:31000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:3, name:"Kaos Polos Premium 3", price:32000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:4, name:"Kaos Polos Premium 4", price:33000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:5, name:"Kaos Polos Premium 5", price:34000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:6, name:"Kaos Polos Premium 6", price:35000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:7, name:"Kaos Polos Premium 7", price:36000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:8, name:"Kaos Polos Premium 8", price:37000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:9, name:"Kaos Polos Premium 9", price:38000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:10, name:"Kaos Polos Premium 10", price:39000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:11, name:"Kaos Polos Premium 11", price:40000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:12, name:"Kaos Polos Premium 12", price:41000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:13, name:"Kaos Polos Premium 13", price:42000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:14, name:"Kaos Polos Premium 14", price:43000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:15, name:"Kaos Polos Premium 15", price:44000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:16, name:"Kaos Polos Premium 16", price:45000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:17, name:"Kaos Polos Premium 17", price:46000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:18, name:"Kaos Polos Premium 18", price:47000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:19, name:"Kaos Polos Premium 19", price:48000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:20, name:"Kaos Polos Premium 20", price:49000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:21, name:"Kaos Polos Premium 21", price:50000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:22, name:"Kaos Polos Premium 22", price:51000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:23, name:"Kaos Polos Premium 23", price:52000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:24, name:"Kaos Polos Premium 24", price:53000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:25, name:"Kaos Polos Premium 25", price:54000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:26, name:"Kaos Polos Premium 26", price:55000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:27, name:"Kaos Polos Premium 27", price:56000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:28, name:"Kaos Polos Premium 28", price:57000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:29, name:"Kaos Polos Premium 29", price:58000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:30, name:"Kaos Polos Premium 30", price:59000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:31, name:"Kaos Polos Premium 31", price:60000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:32, name:"Kaos Polos Premium 32", price:61000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:33, name:"Kaos Polos Premium 33", price:62000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:34, name:"Kaos Polos Premium 34", price:63000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" },
+  { id:35, name:"Kaos Polos Premium 35", price:64000, img:"https://i.imgur.com/mE5ZP3R.jpeg", category:"fashion" }
+];
+
+// ELEMENTS
+const productList = document.getElementById("productList");
+const categoryList = document.getElementById("categoryList");
+const cartCount = document.getElementById("cartCount");
+const accountLink = document.getElementById('accountLink');
+
+// LOAD PRODUCTS
+function loadProducts(list = products){
+  productList.innerHTML="";
+  list.forEach(p=>{
+    productList.innerHTML+=`
+      <div class="product-card">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="product-info">
+          <h3>${p.name}</h3>
+          <p class="price">Rp ${p.price.toLocaleString()}</p>
+          <button class="add-btn" onclick="addToCart(${p.id})">+ Keranjang</button>
+        </div>
+      </div>
+    `;
+  });
+}
+loadProducts();
+
+// CART
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+cartCount.textContent = cart.reduce((a,b)=>a+b.qty,0);
+function addToCart(id){
+  const item=products.find(p=>p.id===id);
+  const exist=cart.find(p=>p.id===id);
+  if(exist){ exist.qty+=1; } 
+  else { cart.push({...item, qty:1}); }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  cartCount.textContent=cart.reduce((a,b)=>a+b.qty,0);
+}
+
+// CATEGORY CLICK
+categoryList.addEventListener("click", e=>{
+  if(e.target.tagName==="DIV"){
+    const selected=e.target.dataset.category;
+    document.querySelectorAll("#categoryList div").forEach(c=>c.classList.remove("active"));
+    e.target.classList.add("active");
+    const filtered=selected==="all"?products:products.filter(p=>p.category===selected);
+    loadProducts(filtered);
+  }
+});
+
+// PRICE OPTIONS
+document.querySelectorAll('#priceOptions div').forEach(option=>{
+  option.addEventListener('click', ()=>{
+    document.querySelectorAll('#priceOptions div').forEach(o=>o.classList.remove('active'));
+    option.classList.add('active');
+    let sorted = [...products];
+    if(option.dataset.price==='asc') sorted.sort((a,b)=>a.price-b.price);
+    if(option.dataset.price==='desc') sorted.sort((a,b)=>b.price-a.price);
+    loadProducts(sorted);
+    document.getElementById('priceOptions').style.display='none';
+  });
+});
+
+// CLOSE DROPDOWN ON CLICK OUTSIDE
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.filter-dropdown')){
+    document.querySelectorAll('.filter-options').forEach(o=>o.style.display='none');
+  }
+});
+
+// BANNER AUTO-SLIDE + DOTS
+document.addEventListener("DOMContentLoaded", function() {
+  const images = document.querySelectorAll(".banner img");
+  const dotsContainer = document.querySelector(".banner-dots");
+  let current = 0;
+
+  images.forEach((_,i)=>{
+    const dot = document.createElement("span");
+    if(i===0) dot.classList.add("active");
+    dot.addEventListener("click", ()=> {
+      images[current].classList.remove("active");
+      dotsContainer.children[current].classList.remove("active");
+      current = i;
+      images[current].classList.add("active");
+      dotsContainer.children[current].classList.add("active");
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  setInterval(() => {
+    images[current].classList.remove("active");
+    dotsContainer.children[current].classList.remove("active");
+    current = (current + 1) % images.length;
+    images[current].classList.add("active");
+    dotsContainer.children[current].classList.add("active");
+  }, 4000);
+});
+
+// SET ACCOUNT USERNAME
+let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+if(currentUser){
+  accountLink.querySelector('span').textContent = currentUser.username;
+}else{
+  accountLink.querySelector('span').textContent = "Saya";
+}
+</script>
+</body>
+</html>
